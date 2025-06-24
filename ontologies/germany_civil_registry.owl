@@ -1,0 +1,307 @@
+<?xml version="1.0"?>
+<rdf:RDF xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+         xmlns:owl="http://www.w3.org/2002/07/owl#"
+         xmlns:rdfs="http://www.w3.org/2000/01/rdf-schema#"
+         xmlns:schema="http://schema.org/"
+         xmlns:foaf="http://xmlns.com/foaf/0.1/"
+         xmlns:eurov="http://data.europa.eu/m8g/"
+         xmlns:xoev="http://www.xoev.de/schemata/personenregister#"
+         xml:base="http://www.xoev.de/schemata/personenregister#">
+
+    <owl:Ontology rdf:about="http://www.xoev.de/schemata/personenregister#">
+        <rdfs:label xml:lang="de">Personenstandsregister Ontologie - Geburtsurkunde</rdfs:label>
+        <rdfs:label xml:lang="en">German Civil Registry Ontology - Birth Certificate</rdfs:label>
+        <rdfs:comment xml:lang="en">
+            German Civil Registry ontology for birth certificate verification.
+            Compliant with XÖV standards, FIM architecture, and eID integration.
+            Based on German Personenstandsgesetz (PStG).
+        </rdfs:comment>
+        <owl:versionInfo>2.0</owl:versionInfo>
+        <xoev:standard>XÖV</xoev:standard>
+        <xoev:fimCompliant rdf:datatype="xsd:boolean">true</xoev:fimCompliant>
+    </owl:Ontology>
+
+    <!-- Birth Certificate Document Class -->
+    <owl:Class rdf:about="xoev:Geburtsurkunde">
+        <rdfs:label xml:lang="de">Geburtsurkunde</rdfs:label>
+        <rdfs:label xml:lang="en">Birth Certificate</rdfs:label>
+        <rdfs:comment>Official birth certificate issued by German civil registry offices (Standesämter)</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="schema:CreativeWork"/>
+        <xoev:documentType>birth_certificate</xoev:documentType>
+    </owl:Class>
+
+    <!-- Person Class -->
+    <owl:Class rdf:about="xoev:Person">
+        <rdfs:label xml:lang="de">Person</rdfs:label>
+        <rdfs:label xml:lang="en">Person</rdfs:label>
+        <rdfs:comment>Individual person registered in German civil registry system</rdfs:comment>
+        <rdfs:subClassOf rdf:resource="foaf:Person"/>
+        <xoev:registryType>civil_registry</xoev:registryType>
+    </owl:Class>
+
+    <!-- Data Properties for Birth Certificate -->
+    
+    <!-- Family Name -->
+    <owl:DatatypeProperty rdf:about="xoev:familienname">
+        <rdfs:label xml:lang="de">Familienname</rdfs:label>
+        <rdfs:label xml:lang="en">Family Name</rdfs:label>
+        <rdfs:comment>Family name (surname) according to German civil registration law</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:seeAlso rdf:resource="foaf:familyName"/>
+        <rdfs:seeAlso rdf:resource="schema:familyName"/>
+        <xoev:required rdf:datatype="xsd:boolean">true</xoev:required>
+        <xoev:maxLength rdf:datatype="xsd:int">60</xoev:maxLength>
+        <xoev:validation>non_empty_string</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Given Name -->
+    <owl:DatatypeProperty rdf:about="xoev:vorname">
+        <rdfs:label xml:lang="de">Vorname</rdfs:label>
+        <rdfs:label xml:lang="en">Given Name</rdfs:label>
+        <rdfs:comment>Given name(s) according to German civil registration law</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:seeAlso rdf:resource="foaf:givenName"/>
+        <rdfs:seeAlso rdf:resource="schema:givenName"/>
+        <xoev:required rdf:datatype="xsd:boolean">true</xoev:required>
+        <xoev:maxLength rdf:datatype="xsd:int">60</xoev:maxLength>
+        <xoev:validation>non_empty_string</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Birth Date -->
+    <owl:DatatypeProperty rdf:about="xoev:geburtsdatum">
+        <rdfs:label xml:lang="de">Geburtsdatum</rdfs:label>
+        <rdfs:label xml:lang="en">Birth Date</rdfs:label>
+        <rdfs:comment>Date of birth in ISO 8601 format (YYYY-MM-DDTHH:MM:SSZ)</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:dateTime"/>
+        <rdfs:seeAlso rdf:resource="schema:birthDate"/>
+        <xoev:required rdf:datatype="xsd:boolean">true</xoev:required>
+        <xoev:format>ISO8601</xoev:format>
+        <xoev:pattern>^[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2}Z$</xoev:pattern>
+        <xoev:validation>iso_datetime</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Place of Birth -->
+    <owl:DatatypeProperty rdf:about="xoev:geburtsort">
+        <rdfs:label xml:lang="de">Geburtsort</rdfs:label>
+        <rdfs:label xml:lang="en">Place of Birth</rdfs:label>
+        <rdfs:comment>Place of birth according to German administrative divisions</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:seeAlso rdf:resource="schema:birthPlace"/>
+        <xoev:required rdf:datatype="xsd:boolean">true</xoev:required>
+        <xoev:maxLength rdf:datatype="xsd:int">100</xoev:maxLength>
+        <xoev:validation>german_place_name</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Nationality -->
+    <owl:DatatypeProperty rdf:about="xoev:staatsangehoerigkeit">
+        <rdfs:label xml:lang="de">Staatsangehörigkeit</rdfs:label>
+        <rdfs:label xml:lang="en">Nationality</rdfs:label>
+        <rdfs:comment>Nationality/citizenship according to German nationality law (StAG)</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:seeAlso rdf:resource="eurov:nationality"/>
+        <xoev:required rdf:datatype="xsd:boolean">true</xoev:required>
+        <xoev:maxLength rdf:datatype="xsd:int">50</xoev:maxLength>
+        <xoev:validation>iso_country_name</xoev:validation>
+        <xoev:codeList>ISO3166-1_CountryNames</xoev:codeList>
+    </owl:DatatypeProperty>
+
+    <!-- Gender -->
+    <owl:DatatypeProperty rdf:about="xoev:geschlecht">
+        <rdfs:label xml:lang="de">Geschlecht</rdfs:label>
+        <rdfs:label xml:lang="en">Gender</rdfs:label>
+        <rdfs:comment>Gender designation according to German civil law (§ 22 Abs. 3 PStG)</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:seeAlso rdf:resource="schema:gender"/>
+        <xoev:required rdf:datatype="xsd:boolean">true</xoev:required>
+        <xoev:enumeration>MALE</xoev:enumeration>
+        <xoev:enumeration>FEMALE</xoev:enumeration>
+        <xoev:enumeration>DIVERSE</xoev:enumeration>
+        <xoev:validation>gender_enum</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Parents as Array -->
+    <owl:DatatypeProperty rdf:about="xoev:eltern">
+        <rdfs:label xml:lang="de">Eltern</rdfs:label>
+        <rdfs:label xml:lang="en">Parents</rdfs:label>
+        <rdfs:comment>Parent information as array of full names according to German civil law</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="rdf:List"/>
+        <rdfs:seeAlso rdf:resource="schema:parent"/>
+        <xoev:required rdf:datatype="xsd:boolean">true</xoev:required>
+        <xoev:minItems rdf:datatype="xsd:int">1</xoev:minItems>
+        <xoev:maxItems rdf:datatype="xsd:int">2</xoev:maxItems>
+        <xoev:itemType>xsd:string</xoev:itemType>
+        <xoev:validation>parent_names_array</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Administrative Properties -->
+    
+    <!-- Birth Registry Number -->
+    <owl:DatatypeProperty rdf:about="xoev:geburtsregister_nummer">
+        <rdfs:label xml:lang="de">Geburtsregister-Nummer</rdfs:label>
+        <rdfs:label xml:lang="en">Birth Registry Number</rdfs:label>
+        <rdfs:comment>Official birth registry number from German civil registry office</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:pattern>^[0-9]{1,6}/[0-9]{4}$</xoev:pattern>
+        <xoev:validation>registry_number</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Civil Registry Office -->
+    <owl:DatatypeProperty rdf:about="xoev:standesamt">
+        <rdfs:label xml:lang="de">Standesamt</rdfs:label>
+        <rdfs:label xml:lang="en">Civil Registry Office</rdfs:label>
+        <rdfs:comment>Name of the German civil registry office (Standesamt) that issued the certificate</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:maxLength rdf:datatype="xsd:int">100</xoev:maxLength>
+        <xoev:validation>german_authority_name</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Issue Date -->
+    <owl:DatatypeProperty rdf:about="xoev:ausstellungsdatum">
+        <rdfs:label xml:lang="de">Ausstellungsdatum</rdfs:label>
+        <rdfs:label xml:lang="en">Issue Date</rdfs:label>
+        <rdfs:comment>Date when the birth certificate was issued</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Geburtsurkunde"/>
+        <rdfs:range rdf:resource="xsd:dateTime"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:format>ISO8601</xoev:format>
+        <xoev:validation>iso_datetime</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- German ID Number -->
+    <owl:DatatypeProperty rdf:about="xoev:personalausweisnummer">
+        <rdfs:label xml:lang="de">Personalausweisnummer</rdfs:label>
+        <rdfs:label xml:lang="en">German ID Card Number</rdfs:label>
+        <rdfs:comment>German national ID card number for eID verification</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:seeAlso rdf:resource="eurov:identifier"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:pattern>^[0-9]{9}$</xoev:pattern>
+        <xoev:length rdf:datatype="xsd:int">9</xoev:length>
+        <xoev:validation>german_id_number</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- District Code -->
+    <owl:DatatypeProperty rdf:about="xoev:gemeindeschluessel">
+        <rdfs:label xml:lang="de">Gemeindeschlüssel</rdfs:label>
+        <rdfs:label xml:lang="en">Municipality Code</rdfs:label>
+        <rdfs:comment>German municipality code (Amtlicher Gemeindeschlüssel - AGS)</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:pattern>^[0-9]{8}$</xoev:pattern>
+        <xoev:length rdf:datatype="xsd:int">8</xoev:length>
+        <xoev:validation>ags_code</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Federal State -->
+    <owl:DatatypeProperty rdf:about="xoev:bundesland">
+        <rdfs:label xml:lang="de">Bundesland</rdfs:label>
+        <rdfs:label xml:lang="en">Federal State</rdfs:label>
+        <rdfs:comment>German federal state (Bundesland) where birth occurred</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:enumeration>Baden-Württemberg</xoev:enumeration>
+        <xoev:enumeration>Bayern</xoev:enumeration>
+        <xoev:enumeration>Berlin</xoev:enumeration>
+        <xoev:enumeration>Brandenburg</xoev:enumeration>
+        <xoev:enumeration>Bremen</xoev:enumeration>
+        <xoev:enumeration>Hamburg</xoev:enumeration>
+        <xoev:enumeration>Hessen</xoev:enumeration>
+        <xoev:enumeration>Mecklenburg-Vorpommern</xoev:enumeration>
+        <xoev:enumeration>Niedersachsen</xoev:enumeration>
+        <xoev:enumeration>Nordrhein-Westfalen</xoev:enumeration>
+        <xoev:enumeration>Rheinland-Pfalz</xoev:enumeration>
+        <xoev:enumeration>Saarland</xoev:enumeration>
+        <xoev:enumeration>Sachsen</xoev:enumeration>
+        <xoev:enumeration>Sachsen-Anhalt</xoev:enumeration>
+        <xoev:enumeration>Schleswig-Holstein</xoev:enumeration>
+        <xoev:enumeration>Thüringen</xoev:enumeration>
+    </owl:DatatypeProperty>
+
+    <!-- Religion -->
+    <owl:DatatypeProperty rdf:about="xoev:konfession">
+        <rdfs:label xml:lang="de">Konfession</rdfs:label>
+        <rdfs:label xml:lang="en">Religion</rdfs:label>
+        <rdfs:comment>Religious confession according to German church tax law</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:maxLength rdf:datatype="xsd:int">50</xoev:maxLength>
+        <xoev:validation>religion_name</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- eID Integration Properties -->
+    
+    <!-- eIDAS Identifier -->
+    <owl:DatatypeProperty rdf:about="xoev:eidas_identifier">
+        <rdfs:label xml:lang="de">eIDAS-Identifikator</rdfs:label>
+        <rdfs:label xml:lang="en">eIDAS Identifier</rdfs:label>
+        <rdfs:comment>Cross-border eIDAS identifier for EU interoperability</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Person"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <rdfs:seeAlso rdf:resource="eurov:eIDASIdentifier"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:pattern>^DE/DE/[A-Z0-9]+$</xoev:pattern>
+        <xoev:validation>eidas_id</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Document Security Properties -->
+    
+    <!-- Security Level -->
+    <owl:DatatypeProperty rdf:about="xoev:sicherheitsstufe">
+        <rdfs:label xml:lang="de">Sicherheitsstufe</rdfs:label>
+        <rdfs:label xml:lang="en">Security Level</rdfs:label>
+        <rdfs:comment>Security assurance level according to eIDAS regulation</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Geburtsurkunde"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:enumeration>LOW</xoev:enumeration>
+        <xoev:enumeration>SUBSTANTIAL</xoev:enumeration>
+        <xoev:enumeration>HIGH</xoev:enumeration>
+        <xoev:defaultValue>SUBSTANTIAL</xoev:defaultValue>
+    </owl:DatatypeProperty>
+
+    <!-- Digital Signature -->
+    <owl:DatatypeProperty rdf:about="xoev:digitale_signatur">
+        <rdfs:label xml:lang="de">Digitale Signatur</rdfs:label>
+        <rdfs:label xml:lang="en">Digital Signature</rdfs:label>
+        <rdfs:comment>Qualified electronic signature according to eIDAS regulation</rdfs:comment>
+        <rdfs:domain rdf:resource="xoev:Geburtsurkunde"/>
+        <rdfs:range rdf:resource="xsd:string"/>
+        <xoev:required rdf:datatype="xsd:boolean">false</xoev:required>
+        <xoev:validation>qualified_signature</xoev:validation>
+    </owl:DatatypeProperty>
+
+    <!-- Custom annotation properties for XÖV compliance -->
+    <owl:AnnotationProperty rdf:about="xoev:required"/>
+    <owl:AnnotationProperty rdf:about="xoev:maxLength"/>
+    <owl:AnnotationProperty rdf:about="xoev:minLength"/>
+    <owl:AnnotationProperty rdf:about="xoev:pattern"/>
+    <owl:AnnotationProperty rdf:about="xoev:format"/>
+    <owl:AnnotationProperty rdf:about="xoev:enumeration"/>
+    <owl:AnnotationProperty rdf:about="xoev:defaultValue"/>
+    <owl:AnnotationProperty rdf:about="xoev:length"/>
+    <owl:AnnotationProperty rdf:about="xoev:validation"/>
+    <owl:AnnotationProperty rdf:about="xoev:codeList"/>
+    <owl:AnnotationProperty rdf:about="xoev:minItems"/>
+    <owl:AnnotationProperty rdf:about="xoev:maxItems"/>
+    <owl:AnnotationProperty rdf:about="xoev:itemType"/>
+    <owl:AnnotationProperty rdf:about="xoev:standard"/>
+    <owl:AnnotationProperty rdf:about="xoev:fimCompliant"/>
+    <owl:AnnotationProperty rdf:about="xoev:documentType"/>
+    <owl:AnnotationProperty rdf:about="xoev:registryType"/>
+
+</rdf:RDF>

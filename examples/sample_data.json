@@ -1,0 +1,50 @@
+{
+  "italian_citizen": {
+    "cognome": "Rossi",
+    "nome": "Marco",
+    "data_nascita": "15/03/1985",
+    "luogo_nascita": "Roma",
+    "codice_fiscale": "RSSMRC85C15H501Z",
+    "genitori": {
+      "padre": "Giuseppe Rossi",
+      "madre": "Maria Bianchi"
+    },
+    "sesso": "M",
+    "cittadinanza": "Italiana"
+  },
+  "expected_german_output": {
+    "familienname": "Rossi",
+    "vorname": "Marco", 
+    "geburtsdatum": "1985-03-15T00:00:00Z",
+    "geburtsort": "Roma",
+    "staatsangehoerigkeit": "Italian",
+    "eltern": ["Giuseppe Rossi", "Maria Bianchi"],
+    "geschlecht": "MALE"
+  },
+  "semantic_alignments": [
+    {
+      "source_field": "cognome",
+      "target_field": "familienname", 
+      "confidence": 0.95,
+      "transformation": "DIRECT_MAP"
+    },
+    {
+      "source_field": "nome",
+      "target_field": "vorname",
+      "confidence": 0.93,
+      "transformation": "DIRECT_MAP"
+    },
+    {
+      "source_field": "data_nascita",
+      "target_field": "geburtsdatum",
+      "confidence": 0.87,
+      "transformation": "DATE_FORMAT_TRANSFORM"
+    },
+    {
+      "source_field": "genitori",
+      "target_field": "eltern",
+      "confidence": 0.78,
+      "transformation": "STRUCTURE_TRANSFORM"
+    }
+  ]
+}
